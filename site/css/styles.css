@@ -465,35 +465,22 @@ figure.chart figcaption {
   color: var(--white);
   font-weight: 600;
 }
-.walkthrough .listen-cta {
-  position: absolute;
-  top: 24px;
-  right: 28px;
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  padding: 8px 14px;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  font-size: 0.66rem;
-  font-weight: 600;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.55);
-  cursor: not-allowed;
-}
-.walkthrough .listen-cta::before {
-  content: '';
+.walkthrough .walkthrough-audio {
   display: block;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.35);
+  width: 100%;
+  margin: 4px 0 26px 0;
+  height: 36px;
+  border-radius: 0;
+  outline: none;
+  /* Subtle filter to lift the default browser controls into a dark theme.
+     Browsers each style audio controls differently, so this is a best-effort
+     visual blend rather than a fully consistent skin. */
+  filter: invert(0.85) hue-rotate(180deg);
 }
+.walkthrough .walkthrough-audio:focus { outline: none; }
 
 @media (max-width: 600px) {
   .walkthrough { padding: 28px 24px; }
-  .walkthrough .listen-cta { display: none; }
 }
 
 /* ---------------------------------------------------------------------
