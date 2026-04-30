@@ -94,7 +94,7 @@ def build_users(cfg: GeneratorConfig, rng: np.random.Generator) -> pd.DataFrame:
       demographic_multiplier   per-user multiplier on the baseline
                                conversion rate. Higher-income, prime-age
                                (35-49) users have higher propensity to
-                               sign up for an AmEx card. Range about 0.30
+                               sign up for a premium credit card. Range about 0.30
                                to 2.10, centered near 1.0.
     """
     n_users = cfg.n_users
@@ -249,7 +249,7 @@ def build_conversions_and_ground_truth(
     Build conversions and the ground-truth answer key in one pass.
 
     Each user has at most one conversion event over the n_weeks horizon
-    (a user who signs up for an AmEx card does not sign up again next
+    (a user who signs up for a premium credit card does not sign up again next
     week). We process week by week. For each not-yet-converted user, we
     compute their hazard, the probability of converting THIS week:
 

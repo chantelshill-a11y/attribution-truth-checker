@@ -1,7 +1,7 @@
 """
 Build notebooks/walkthrough.ipynb from this single source file.
 
-This is the live-demo artifact for the AmEx interview. The notebook
+This is the live-demo artifact for the project walkthrough. The notebook
 walks through every component of the truth-checker, with a mix of
 explanatory markdown and code cells that load the existing data and
 display the brand-styled charts inline.
@@ -66,7 +66,7 @@ def build_cells() -> list[dict]:
         "",
         "**Incrementality** is causation. The answer to: \"If we had not run this channel, how many of these conversions would still have happened?\" The conversions that would *not* have happened without the channel are the *incremental* ones. That is the only number a CFO actually cares about, because it is the only number tied to whether a marketing dollar produced a return.",
         "",
-        "The gap between attribution credit and true incrementality is the entire reason this project exists. A channel can be credited with 30 percent of conversions and be responsible for 5 percent of the actual lift. That is a $200M problem at AmEx scale. The truth-checker measures the gap.",
+        "The gap between attribution credit and true incrementality is the entire reason this project exists. A channel can be credited with 30 percent of conversions and be responsible for 5 percent of the actual lift. That is a nine-figure problem at enterprise scale. The truth-checker measures the gap.",
     ))
 
     # =====================================================================
@@ -371,7 +371,7 @@ def build_cells() -> list[dict]:
     # 11. Closing
     # =====================================================================
     cells.append(md(
-        "## What I would do at AmEx scale",
+        "## What I would do at enterprise scale",
         "",
         "Phase 1 here is a working prototype on synthetic data. The natural extensions for production:",
         "",

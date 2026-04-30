@@ -77,7 +77,7 @@ channels:
     last_touch_share_target: 0.32
     reach: 0.55
     # Why over-credited: paid search captures intent that already exists.
-    # If you Google "amex platinum review," the search ad gets last-click
+    # If you Google "premium card review," the search ad gets last-click
     # credit for a conversion that would have happened anyway through any
     # other touchpoint. This is the single most-discussed attribution flaw
     # in the industry.
@@ -116,8 +116,8 @@ channels:
     reach: 0.20
     # Why under-credited: a paper mailer arrives, the recipient types the
     # URL into their browser. The attribution model sees a "direct" visit,
-    # not a mail-driven one. AmEx specifically still spends meaningfully
-    # on direct mail and almost certainly underestimates it.
+    # not a mail-driven one. Major financial services brands still spend
+    # meaningfully on direct mail and almost certainly underestimate it.
 
   - name: affiliate
     label: ACCURATE
