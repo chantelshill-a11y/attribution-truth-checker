@@ -45,11 +45,15 @@ MODEL_ID = "eleven_multilingual_v2"
 NARRATIONS: list[tuple[str, str]] = [
     (
         "walkthrough-overview.mp3",
-        """Hi. What you're looking at is a tool that does something most marketing teams don't: hold their attribution model accountable to causal reality. Attribution is the bookkeeping that says "this channel drove that conversion." Incrementality is the harder question of whether the conversion would have happened anyway. Most teams treat attribution as if it answered both. It doesn't.
+        """Hi, I'm Chantel Hill. This is a project I built called the Attribution Truth-Checker. It does something most marketing teams don't: holds their attribution model accountable to causal reality.
 
-The chart up top is the entire project compressed into one image. The charcoal bars are what a last-touch attribution model claims each channel contributed. The forest-green bars are what a geo-lift experiment actually measured. Where the two bars disagree, the model is misallocating credit. Direct mail on the far left is the most-misallocated channel in this run, getting only 7.7 percent of credit when reality says it deserves 27.
+Attribution is bookkeeping. Incrementality is causation. Most teams treat attribution as if it answered both. It doesn't. That's the gap this project measures.
 
-Below this panel, four headline numbers. Below that, six cards. Each card is a self-contained walkthrough of one piece of how the system works, written in this same plain-language voice. There is no required order. Click whatever looks interesting.""",
+The chart up top is the headline. Charcoal bars are what a last-touch attribution model claims each channel drove. Forest-green bars are what a geo-lift experiment actually measured. Direct mail on the far left is the most-misallocated channel here, getting only 7.7 percent of credit when reality supports 27.
+
+Below, four headline numbers. Aggregate over-attribution: 3.2 times. Largest mis-allocation: 19.5 percentage points. Recall on the over-credited class: 85 percent. And direction correctness when Claude graded the executive summary: 100 percent across 18 evaluations.
+
+Below those, six cards, one per pipeline component. Each card opens its own walkthrough in this same voice. There's no required order. Click whatever looks interesting.""",
     ),
     (
         "walkthrough-synthetic-data.mp3",
@@ -95,15 +99,17 @@ This page is the methodological discipline most attribution work skips. The fram
     ),
     (
         "manifesto.mp3",
-        """Hi, I'm Chantel Hill. I'm an AI Consultant.
+        """Hi, I'm Chantel Hill. I'm an AI and CLM Consultant, and a Certified Paralegal.
 
-I help teams ship AI systems that stakeholders actually trust. That means hands-on work, not just advisory. I help define what an AI system should do for a business, build a working version of it, and grade whether it's reliable before anyone deploys it.
+That combination is rare, and it's the entire reason this site exists. Most people building AI for contract review are either lawyers who don't trust the model, or engineers who've never read a contract. I've done both. That changes everything about how I build.
 
-I came up in legal AI, specifically contract clause extraction. The discipline I learned there, measuring AI accuracy with precision, recall, and F1, treating ambiguous decisions as classification problems even when they look continuous, that discipline applies anywhere AI has to earn trust before it goes live.
+What you're looking at is six years of legal practice plus a year and counting of contract AI work, distilled into the projects, case studies, and methodology that prove I can do both sides of this work to a defensible standard.
 
-The featured project on this site is a marketing attribution truth-checker. I built it deliberately outside of legal to prove the methodology transfers between domains. Synthetic data with known ground truth, geo-lift validation, classifier-style evaluation on top. The system caught a 19 percentage-point under-credit on a channel the attribution model was telling the business to cut.
+As you scroll, you'll see the headline numbers first. Forty plus clause detection models. Fifty thousand contracts processed. Ninety-five percent accuracy minimum before anything reaches production.
 
-If you're shipping AI into production and you need a consultant who measures trust the same way they measure accuracy, that's the work I do.""",
+Below that, three case studies including a fifty-thousand-contract financial services engagement, and the six decisions I make on every build that most consultants skip. Then my full skill stack, live LinkedIn, and a working attribution-validation project I built outside of legal to prove the methodology transfers between domains.
+
+If your team is scaling AI-assisted contract review and needs someone who understands both the legal risk and the technical execution, let's talk.""",
     ),
 ]
 
