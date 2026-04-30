@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Attribution Truth-Checker — Chantel Hill</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Jost:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="css/styles.css" rel="stylesheet">
+</head>
+<body>
+
+<nav class="top">
+  <div class="nav-brand">
+    <a class="nav-portfolio-link" href="https://chantelhill.com">Chantel Hill</a>
+    <span class="nav-separator">/</span>
+    <a class="nav-logo" href="index.html">Attribution Truth-Checker</a>
+  </div>
+  <ul class="nav-links">
+    <li><a href="index.html" class="active">Overview</a></li>
+    <li><a href="synthetic-data.html">Synthetic Data</a></li>
+    <li><a href="geo-lift.html">Geo-Lift Engine</a></li>
+    <li><a href="truth-check.html">Truth-Check</a></li>
+    <li><a href="narrative.html">Narrative</a></li>
+    <li><a href="self-evaluation.html">Self-Evaluation</a></li>
+  </ul>
+</nav>
+
+<main>
+
+  <section class="hero">
+    <div class="hero-content">
+      <div class="eyebrow">Attribution analytics &middot; Validation system</div>
+      <h1 class="hero-title">Where the attribution model and <em>reality</em> disagree.</h1>
+      <p class="hero-subtitle">
+        A working prototype that validates marketing attribution against measured causal incrementality.
+        Synthetic data with known ground truth. Geo-lift estimation with cluster-robust standard errors.
+        A truth-check that exposes which channels are over-credited, under-credited, or accurate within
+        measurement noise. Self-evaluation with precision, recall, and F1, because attribution decisions
+        are categorical and should be graded as such.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="truth-check.html">See the truth-check</a>
+        <a class="btn btn-secondary" href="synthetic-data.html">How it works</a>
+      </div>
+    </div>
+    <figure class="hero-chart">
+      <img src="charts/comparison.png" alt="Comparison chart: model claim vs measured incrementality per channel.">
+      <figcaption>
+        Channel-only shares of conversions. Last-touch attribution model claims (charcoal) versus measured
+        incrementality from geo-lift experiments (forest). The gap above each pair, in percentage points,
+        is the truth-check finding for that channel.
+      </figcaption>
+    </figure>
+  </section>
+
+  <section style="padding: 0;">
+    <div class="container" style="padding: 0 48px;">
+      <div class="walkthrough">
+        <div class="walkthrough-eyebrow">Walkthrough &middot; Episode 01</div>
+        <span class="listen-cta" title="Audio narration coming in V2">Listen &middot; Coming soon</span>
+        <p>
+          Hi. What you're looking at is a tool that does something most marketing teams don't:
+          hold their attribution model accountable to <em>causal reality</em>. Attribution is the
+          bookkeeping that says "this channel drove that conversion." Incrementality is the
+          harder question of whether the conversion would have happened anyway. Most teams
+          treat attribution as if it answered both. It doesn't.
+        </p>
+        <p>
+          The <strong>chart up top</strong> is the entire project compressed into one image.
+          The charcoal bars are what a last-touch attribution model claims each channel
+          contributed. The forest-green bars are what a geo-lift experiment actually measured.
+          Where the two bars disagree, the model is misallocating credit. <em>Direct mail</em>
+          on the far left is the most-misallocated channel in this run. Getting only 7.7
+          percent of credit when reality says it deserves 27.
+        </p>
+        <p>
+          Below this panel, four headline numbers. Below that, six cards. Each card is a
+          self-contained walkthrough of one piece of how the system works, written in this
+          same plain-language voice. There is no required order. Click whatever looks
+          interesting.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="stats">
+    <div class="container">
+      <div>
+        <div class="stat-eyebrow">Aggregate over-attribution</div>
+        <div class="stat-value">3.2<em>&times;</em></div>
+        <div class="stat-label">Last-touch attributes 16,426 conversions to channels; geo-lift measurement supports 5,144. The model has no concept of baseline conversions.</div>
+      </div>
+      <div>
+        <div class="stat-eyebrow">Largest mis-allocation</div>
+        <div class="stat-value">&minus;19.5<em>pp</em></div>
+        <div class="stat-label">Direct mail is under-credited by nearly 20 percentage points. The model gives it 7.7% of channel credit; reality supports 27.3%.</div>
+      </div>
+      <div>
+        <div class="stat-eyebrow">Recall on over-credit class</div>
+        <div class="stat-value">0.85</div>
+        <div class="stat-label">Across 50 simulated experiments, the truth-checker correctly flags 85% of channels that are actually over-credited. Direction errors are nearly zero.</div>
+      </div>
+      <div>
+        <div class="stat-eyebrow">Narrative direction accuracy</div>
+        <div class="stat-value">100<em>%</em></div>
+        <div class="stat-label">Claude-graded narrative correctness across 18 channel evaluations. Same-family judge caveat applies; magnitude correctness was also 100%.</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="eyebrow">The system, end to end</div>
+      <h2>Six components, one validation pipeline.</h2>
+      <p class="muted" style="max-width: 760px; margin-bottom: 12px;">
+        Synthetic data builds the answer key. The geo-lift engine recovers truth from public data alone.
+        The comparison layer flags where the attribution model and reality diverge. The narrative layer
+        translates the gap into plain English. The self-evaluation harness grades the truth-checker
+        the same way you'd grade a clause classifier: precision, recall, F1, threshold sweeps, calibration.
+      </p>
+
+      <div class="cards">
+
+        <a class="card" href="synthetic-data.html">
+          <div class="num">01</div>
+          <h3>Synthetic Data</h3>
+          <p>50 cities, 26 weeks, 100,000 users. Six channels with known ground-truth incrementality patterns baked in. Dark periods structured so the geo-lift engine has natural-experiment variation to exploit.</p>
+          <span class="card-link">View pipeline</span>
+        </a>
+
+        <a class="card" href="geo-lift.html">
+          <div class="num">02</div>
+          <h3>Geo-Lift Engine</h3>
+          <p>Two-way fixed-effects panel regression with cluster-robust standard errors, hand-rolled in numpy. Recovers per-channel incrementality from the public data alone. The answer key stays sealed.</p>
+          <span class="card-link">See the math</span>
+        </a>
+
+        <a class="card" href="truth-check.html">
+          <div class="num">03</div>
+          <h3>Truth-Check</h3>
+          <p>Channel-by-channel comparison of model claim against measured incrementality. Three-class output. Live threshold slider on this page lets you see how the labels move as the decision boundary changes.</p>
+          <span class="card-link">Try the slider</span>
+        </a>
+
+        <a class="card" href="narrative.html">
+          <div class="num">04</div>
+          <h3>Narrative</h3>
+          <p>Claude Opus 4.7 turns the comparison data into an executive summary. Style rules baked into the system prompt. Every numeric claim traces back to the underlying data.</p>
+          <span class="card-link">Read the report</span>
+        </a>
+
+        <a class="card" href="self-evaluation.html">
+          <div class="num">05</div>
+          <h3>Self-Evaluation</h3>
+          <p>Precision, recall, F1, confusion matrix, threshold sweep, calibration check, and Claude-graded narrative correctness. The validator validated the same way clause classifiers are validated in legal AI.</p>
+          <span class="card-link">See the scores</span>
+        </a>
+
+        <a class="card" href="self-evaluation.html#methodology">
+          <div class="num">06</div>
+          <h3>Methodology Notes</h3>
+          <p>What I would change at AmEx scale. Single-channel synthetic control. Out-of-family LLM judges for narrative eval. Larger-N evaluation runs. Production data connectors and audit trails.</p>
+          <span class="card-link">Read the notes</span>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div>
+    <a href="https://chantelhill.com" style="border-bottom: none; color: var(--mid);">&larr; Chantel Hill portfolio</a>
+    &nbsp;&middot;&nbsp; Built with Python 3.11, numpy, pandas, matplotlib, Anthropic SDK
+  </div>
+  <div>Project repo: <a href="#">github.com/chantelhill</a></div>
+</footer>
+
+</body>
+</html>

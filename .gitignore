@@ -1,0 +1,26 @@
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Generated synthetic data (regenerated from the seed; site/data/ is the
+# committed export that the deployed site reads).
+data/synthetic/*.csv
+data/synthetic/_ground_truth/
+data/synthetic/_evaluation/
+data/synthetic/_verification/
+data/synthetic/narrative.md
+
+reports/
+
+.env
+.env.local
+.streamlit/secrets.toml
+
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db

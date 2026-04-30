@@ -1,0 +1,55 @@
+{
+  "total_predictions": 300,
+  "accuracy": 0.69,
+  "macro_f1": 0.6782480783972487,
+  "weighted_f1": 0.6782480783972487,
+  "per_class": [
+    {
+      "label": "OVER_CREDITED",
+      "support": 100,
+      "precision": 0.7727272727272727,
+      "recall": 0.85,
+      "f1": 0.8095238095238095,
+      "tp": 85,
+      "fp": 25,
+      "fn": 15
+    },
+    {
+      "label": "UNDER_CREDITED",
+      "support": 100,
+      "precision": 0.6752136752136753,
+      "recall": 0.79,
+      "f1": 0.728110599078341,
+      "tp": 79,
+      "fp": 38,
+      "fn": 21
+    },
+    {
+      "label": "ACCURATE",
+      "support": 100,
+      "precision": 0.589041095890411,
+      "recall": 0.43,
+      "f1": 0.49710982658959535,
+      "tp": 43,
+      "fp": 30,
+      "fn": 57
+    }
+  ],
+  "confusion": {
+    "OVER_CREDITED": {
+      "OVER_CREDITED": 85,
+      "UNDER_CREDITED": 3,
+      "ACCURATE": 22
+    },
+    "UNDER_CREDITED": {
+      "OVER_CREDITED": 3,
+      "UNDER_CREDITED": 79,
+      "ACCURATE": 35
+    },
+    "ACCURATE": {
+      "OVER_CREDITED": 12,
+      "UNDER_CREDITED": 18,
+      "ACCURATE": 43
+    }
+  }
+}

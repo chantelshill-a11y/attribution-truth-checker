@@ -1,0 +1,73 @@
+{
+  "total_model_attributed_conversions": 16426.0,
+  "total_measured_incremental_conversions": 5144.461033309692,
+  "over_attribution_factor": 3.192948667244997,
+  "channels": [
+    {
+      "channel": "direct_mail",
+      "model_share_pct": 7.749908681358822,
+      "measured_share_pct": 27.272100786091475,
+      "model_attributed_conversions": 1273.0,
+      "measured_incremental_conversions": 1403.0025979054224,
+      "share_gap_pp": -19.522192104732653,
+      "abs_share_gap_pp": 19.522192104732653,
+      "measured_p_value": 0.000170971001022,
+      "label_at_default_threshold": "UNDER_CREDITED"
+    },
+    {
+      "channel": "paid_search",
+      "model_share_pct": 21.75818823815901,
+      "measured_share_pct": 8.243204485759547,
+      "model_attributed_conversions": 3574.0,
+      "measured_incremental_conversions": 424.0684426659365,
+      "share_gap_pp": 13.514983752399468,
+      "abs_share_gap_pp": 13.514983752399468,
+      "measured_p_value": 0.3091347087725631,
+      "label_at_default_threshold": "OVER_CREDITED"
+    },
+    {
+      "channel": "display",
+      "model_share_pct": 25.13089005235602,
+      "measured_share_pct": 12.26778855150443,
+      "model_attributed_conversions": 4128.0,
+      "measured_incremental_conversions": 631.1116016809729,
+      "share_gap_pp": 12.86310150085159,
+      "abs_share_gap_pp": 12.86310150085159,
+      "measured_p_value": 0.0713854933364617,
+      "label_at_default_threshold": "OVER_CREDITED"
+    },
+    {
+      "channel": "tv_brand",
+      "model_share_pct": 14.26397175210033,
+      "measured_share_pct": 20.12020154587517,
+      "model_attributed_conversions": 2343.0,
+      "measured_incremental_conversions": 1035.0759283509226,
+      "share_gap_pp": -5.856229793774842,
+      "abs_share_gap_pp": 5.856229793774842,
+      "measured_p_value": 0.0214683460656515,
+      "label_at_default_threshold": "UNDER_CREDITED"
+    },
+    {
+      "channel": "paid_social",
+      "model_share_pct": 20.759771094606112,
+      "measured_share_pct": 23.2311432550868,
+      "model_attributed_conversions": 3410.0,
+      "measured_incremental_conversions": 1195.1171123502932,
+      "share_gap_pp": -2.471372160480687,
+      "abs_share_gap_pp": 2.471372160480687,
+      "measured_p_value": 0.0003689265594148,
+      "label_at_default_threshold": "ACCURATE"
+    },
+    {
+      "channel": "affiliate",
+      "model_share_pct": 10.3372701814197,
+      "measured_share_pct": 8.86556137568258,
+      "model_attributed_conversions": 1698.0,
+      "measured_incremental_conversions": 456.085350356145,
+      "share_gap_pp": 1.471708805737121,
+      "abs_share_gap_pp": 1.471708805737121,
+      "measured_p_value": 0.3377583379626192,
+      "label_at_default_threshold": "ACCURATE"
+    }
+  ]
+}

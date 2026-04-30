@@ -1,0 +1,11 @@
+Our last-touch attribution is overstating channel-driven conversions by roughly 3.2x (16,426 claimed versus 5,144 measured as truly incremental over 26 weeks), and the mix inside that number is wrong in ways that should change next quarter's budget.
+
+**Direct mail is badly under-credited.** The model gives it 7.7% of channel credit, but geo-lift measurement puts its true contribution at 27.3%, a 19.5 percentage point gap and the largest mismatch in the portfolio. The measurement is statistically tight (p-value 0.000), so this is not noise. Direct mail is doing far more work than the dashboards show, and the recommended action is to protect and likely expand its budget rather than trim it in the next planning cycle.
+
+**Paid search is the most over-credited channel in absolute terms.** The model assigns it 21.8% of channel credit; measurement supports only 8.2%, a swing of roughly 3,150 conversions that paid search is getting credit for but not actually causing. One important caveat: the p-value on the paid search measurement is 0.309, meaning the precise size of the overstatement is uncertain. The direction is consistent with brand search cannibalization, so the action is to run a planned paid search holdout test in one or two geos this quarter before making large cuts.
+
+**Display is over-credited and the evidence is stronger.** The model claims 25.1% of channel credit; measurement shows 12.3%, a 12.9 percentage point gap and about 3,497 conversions of overstatement. The p-value of 0.071 is suggestive rather than conclusive, but the gap is large enough that the prudent move is to reduce display spend by a meaningful step (start with 20 to 30%) and reinvest the savings into the under-credited channels while monitoring total conversions.
+
+**TV brand is under-credited with solid statistical support.** The model gives it 14.3% of credit; measurement says 20.1%, a 5.9 percentage point gap with a p-value of 0.021. TV is pulling more weight than the attribution model recognizes, particularly on upper-funnel demand that paid search and display are then taking credit for. Hold or modestly increase TV brand investment, and stop using last-touch numbers to justify cuts to it.
+
+This week, commission the paid search geo holdout and rebalance roughly 15 to 20% of display budget toward direct mail and TV brand pending those results.

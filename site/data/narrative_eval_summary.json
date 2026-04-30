@@ -1,0 +1,24 @@
+{
+  "n_channel_evaluations": 18,
+  "channel_mentioned_rate": 1.0,
+  "direction_correct_rate": 1.0,
+  "magnitude_correct_rate": 1.0,
+  "by_true_label": {
+    "OVER_CREDITED": {
+      "n": 9,
+      "channel_mentioned_rate": 1.0,
+      "direction_correct_rate": 1.0,
+      "magnitude_correct_rate": 1.0
+    },
+    "UNDER_CREDITED": {
+      "n": 9,
+      "channel_mentioned_rate": 1.0,
+      "direction_correct_rate": 1.0,
+      "magnitude_correct_rate": 1.0
+    }
+  },
+  "n_simulations": 5,
+  "total_api_cost_usd": 0.254985,
+  "writer_cost_usd": 0.13339,
+  "grader_cost_usd": 0.121595
+}

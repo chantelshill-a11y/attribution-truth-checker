@@ -1,0 +1,166 @@
+# Default configuration for the Attribution Truth-Checker.
+#
+# Every parameter here is a methodology choice. Each one carries a trade-off,
+# and the comment above it explains what we are choosing and why.
+
+# ---------------------------------------------------------------------------
+# Reproducibility
+# ---------------------------------------------------------------------------
+
+# Random seed for the synthetic data generator. Fixed so every run produces
+# the same data, which makes the verification step trustworthy. Change this
+# (or pass --seed on the CLI) to confirm results are not fragile to one
+# specific draw of random numbers.
+random_seed: 42
+
+# ---------------------------------------------------------------------------
+# Scale of the simulated experiment
+# ---------------------------------------------------------------------------
+
+# Why these numbers:
+#   - 50 cities is the standard scale for real geo-lift experiments. Smaller
+#     than this and confidence intervals blow up; larger and the demo runs
+#     slow.
+#   - 26 weeks gives us roughly 13 weeks of "pre-period" baseline before any
+#     channel manipulation, plus 13 weeks of "treatment" period. That is the
+#     minimum for a credible difference-in-differences analysis.
+#   - 100,000 users distributed across 50 cities averages 2,000 per city,
+#     which is realistic for a national brand and big enough that conversion
+#     rates stabilize.
+n_cities: 50
+n_weeks: 26
+n_users: 100000
+
+# ---------------------------------------------------------------------------
+# Baseline conversion rate
+# ---------------------------------------------------------------------------
+
+# The base rate at which a user signs up for a card in a given week with no
+# marketing exposure at all. Real card-acquisition baselines are tiny (0.1%
+# weekly is already strong), but we set it slightly higher here to keep the
+# demo fast. With 100k users, 0.005 baseline gives us ~500 baseline
+# conversions per week, which is enough to see lift signals clearly.
+baseline_conversion_rate: 0.005
+
+# ---------------------------------------------------------------------------
+# Channels and their ground truth
+# ---------------------------------------------------------------------------
+#
+# Each channel has two key parameters that drive the ground truth pattern:
+#
+#   true_incremental_rate
+#     The actual causal lift this channel produces. A value of 0.002 means
+#     "exposure to this channel adds 0.2 percentage points to a user's weekly
+#     conversion probability." This is what geo-lift analysis should
+#     rediscover.
+#
+#   last_touch_share_target
+#     What share of conversions a deliberately-broken last-touch attribution
+#     model will assign to this channel. We tune this so the model claim
+#     diverges from the truth in the way each channel's label dictates.
+#
+#   reach
+#     Per-week probability that a given user in a given city is exposed to
+#     this channel. Higher reach = more touchpoints, which gives last-touch
+#     models more chances to credit the channel.
+#
+# The labels are the answer key for Component 6 (self-evaluation):
+#   OVER_CREDITED  : true incrementality < model credit
+#   UNDER_CREDITED : true incrementality > model credit
+#   ACCURATE       : true incrementality ~= model credit
+
+channels:
+
+  - name: paid_search
+    label: OVER_CREDITED
+    true_incremental_rate: 0.0004    # tuned 0.0008 -> 0.0004; intent-capture channel with high reach but very small real lift
+    last_touch_share_target: 0.32
+    reach: 0.55
+    # Why over-credited: paid search captures intent that already exists.
+    # If you Google "amex platinum review," the search ad gets last-click
+    # credit for a conversion that would have happened anyway through any
+    # other touchpoint. This is the single most-discussed attribution flaw
+    # in the industry.
+
+  - name: display
+    label: OVER_CREDITED
+    true_incremental_rate: 0.0002    # near-zero real lift
+    last_touch_share_target: 0.18    # but view-through credit inflates it
+    reach: 0.65
+    # Why over-credited: display ads get "view-through" credit for ads no
+    # one looked at. Everyone scrolls past banner ads. Attribution models
+    # treat impressions as touchpoints anyway.
+
+  - name: paid_social
+    label: ACCURATE
+    true_incremental_rate: 0.0010    # tuned 0.0015 -> 0.0010 so true share matches what last-touch ends up giving it
+    last_touch_share_target: 0.16    # roughly matches share of true lift
+    reach: 0.50
+    # Why accurate: clicky digital channel where both true causal effect
+    # and model credit roughly agree. Useful as a sanity-check baseline.
+
+  - name: tv_brand
+    label: UNDER_CREDITED
+    true_incremental_rate: 0.0025    # large real lift
+    last_touch_share_target: 0.05    # but model barely sees TV
+    reach: 0.30
+    # Why under-credited: TV drives long-term brand consideration. Someone
+    # sees the ad, thinks about it for a week, then Googles the card.
+    # Last-touch attribution credits the search click, not the TV ad that
+    # planted the seed.
+
+  - name: direct_mail
+    label: UNDER_CREDITED
+    true_incremental_rate: 0.0018    # solid real lift
+    last_touch_share_target: 0.04    # but offline-to-online is invisible
+    reach: 0.20
+    # Why under-credited: a paper mailer arrives, the recipient types the
+    # URL into their browser. The attribution model sees a "direct" visit,
+    # not a mail-driven one. AmEx specifically still spends meaningfully
+    # on direct mail and almost certainly underestimates it.
+
+  - name: affiliate
+    label: ACCURATE
+    true_incremental_rate: 0.0010    # modest real lift
+    last_touch_share_target: 0.10    # roughly matches true lift
+    reach: 0.25
+    # Why accurate: another sanity baseline. In real life affiliates can
+    # be over-credited too (coupon-site loyalty hijacking) but we keep this
+    # one clean for now.
+
+# ---------------------------------------------------------------------------
+# Geo-experiment design (used by the geo-lift engine in the next session)
+# ---------------------------------------------------------------------------
+
+# Density of "dark periods" we deliberately bake into the exposure data.
+# A dark period is a stretch of weeks where a given channel is held out of
+# a given city, creating a natural treatment-vs-control comparison. Without
+# dark periods there is nothing for difference-in-differences to compare.
+dark_period:
+  fraction_of_city_weeks: 0.20    # ~20% of city-week-channel cells go dark
+  min_consecutive_weeks: 3         # dark stretches are at least 3 weeks long
+                                   # so we capture sustained absence, not noise
+
+# ---------------------------------------------------------------------------
+# Statistical settings for the analysis layer (next session)
+# ---------------------------------------------------------------------------
+
+confidence_level: 0.90
+# 90% intervals, not 95%. In marketing measurement the cost of a missed
+# real effect (false negative: leaving a working channel underfunded) is
+# usually higher than the cost of a false positive. 90% is the industry
+# convention for the same reason.
+
+p_value_threshold: 0.10
+# Decision threshold for declaring a gap "meaningful" in the comparison
+# layer. The threshold sweep in Component 6 will tune this against
+# precision/recall on the OVER_CREDITED class.
+
+# ---------------------------------------------------------------------------
+# Output paths
+# ---------------------------------------------------------------------------
+
+output:
+  data_dir: data/synthetic
+  ground_truth_dir: data/synthetic/_ground_truth
+  reports_dir: reports

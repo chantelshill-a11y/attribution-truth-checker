@@ -1,0 +1,6 @@
+{
+  "total_predictions": 300,
+  "n_bins_populated": 10,
+  "expected_calibration_error": 0.15538216360007617,
+  "interpretation": "ECE is the bin-size-weighted mean absolute gap between stated confidence and empirical accuracy. 0 is perfect; <0.05 is well-calibrated; >0.10 is meaningfully miscalibrated."
+}
