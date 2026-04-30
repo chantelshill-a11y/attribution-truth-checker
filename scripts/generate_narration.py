@@ -29,9 +29,9 @@ AUDIO_DIR = ROOT / "site" / "audio"
 ELEVENLABS_TTS_URL = "https://api.elevenlabs.io/v1/text-to-speech/{voice_id}"
 
 VOICE_SETTINGS = {
-    "stability": 0.30,        # lower = more expressive (counter-intuitive: 0.5 sounded monotone)
-    "similarity_boost": 0.60, # slightly lower than default 0.75 so the model isn't locked to source flatness
-    "style": 0.45,             # adds emotional/intonation variety
+    "stability": 0.45,        # bumped from 0.30 to reduce dramatic word-stretching artifacts
+    "similarity_boost": 0.65, # closer to source recording for cleaner reading
+    "style": 0.20,             # much lower than the previous 0.45 to prevent over-expression
     "use_speaker_boost": True,
 }
 MODEL_ID = "eleven_multilingual_v2"
@@ -49,7 +49,7 @@ NARRATIONS: list[tuple[str, str]] = [
 
 The chart up top is the headline. Charcoal bars are what a last-touch attribution model claims each channel drove. Forest-green bars are what a geo-lift experiment actually measured. Direct mail on the far left is the most misallocated channel here. It gets only 7.7 percent of credit when reality supports 27.
 
-Below the chart, four headline numbers. Aggregate over-attribution is 3.2 times. The largest misallocation is 19.5 percentage points. Recall on the over-credited class is 85 percent. And when Claude graded the executive summary, direction correctness was 100 percent across 18 evaluations. Below those numbers, six cards, one per pipeline component. Each card opens its own walkthrough in this same voice. There's no required order. Click whatever looks interesting.""",
+Below the chart, four headline numbers. Aggregate over-attribution is 3.2 times. The largest misallocation is 19.5 percentage points. Recall on the over-credited class is 85 percent. And when Claude graded the executive summary on 18 channel decisions, direction correctness scored 100 percent. Below those numbers, six cards, one per pipeline component. Each card opens its own walkthrough in this same voice. There's no required order. Click whatever looks interesting.""",
     ),
     (
         "walkthrough-synthetic-data.mp3",
