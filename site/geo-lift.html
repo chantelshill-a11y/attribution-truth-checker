@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Geo-Lift Engine &mdash; Attribution Truth-Checker</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Jost:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="css/styles.css" rel="stylesheet">
+</head>
+<body>
+
+<nav class="top">
+  <div class="nav-brand">
+    <a class="nav-portfolio-link" href="https://chantelhill.com">Chantel Hill</a>
+    <span class="nav-separator">/</span>
+    <a class="nav-logo" href="index.html">Attribution Truth-Checker</a>
+  </div>
+  <ul class="nav-links">
+    <li><a href="index.html">Overview</a></li>
+    <li><a href="synthetic-data.html">Synthetic Data</a></li>
+    <li><a href="geo-lift.html" class="active">Geo-Lift Engine</a></li>
+    <li><a href="truth-check.html">Truth-Check</a></li>
+    <li><a href="narrative.html">Narrative</a></li>
+    <li><a href="self-evaluation.html">Self-Evaluation</a></li>
+  </ul>
+</nav>
+
+<main>
+  <section>
+    <div class="container">
+      <div class="eyebrow">Pipeline component &middot; 02</div>
+      <h1>Recovering truth from <em>public data</em> alone.</h1>
+      <p style="max-width: 720px; font-size: 1.06rem; line-height: 1.85; color: var(--mid); margin-top: 16px;">
+        Two-way fixed-effects panel regression with cluster-robust standard errors. Hand-rolled in numpy.
+        The math any attribution interview will ask about, made visible.
+      </p>
+
+      <div class="walkthrough">
+        <div class="walkthrough-eyebrow">Walkthrough &middot; Episode 03</div>
+        <span class="listen-cta" title="Audio narration coming in V2">Listen &middot; Coming soon</span>
+        <p>
+          Now the hard part: recover the answer key from public data without peeking at it. The
+          technique is called <strong>geo-lift</strong>, and the math underneath it is something
+          called <strong>difference-in-differences</strong>.
+        </p>
+        <p>
+          Imagine two cities, Phoenix and Tucson. Phoenix runs a TV campaign. Tucson does not.
+          Phoenix's conversions go up by three percent during the campaign. Tucson's go up by
+          one percent. Both cities probably had some shared trend, like seasonality. The lift
+          attributable to TV is the difference of those differences: <em>two percent</em>.
+          Subtraction twice. Once to remove the city's own baseline. Once to remove the
+          common trend with the control. What is left is the causal effect.
+        </p>
+        <p>
+          We scale that two-by-two logic up across 50 cities and 26 weeks using a regression that
+          absorbs every city's individual baseline and every week's average shock, leaving only
+          the channel-on-or-off variation as the source of truth. The technical name is
+          <strong>two-way fixed effects</strong>. The cluster-robust standard errors below are
+          there because observations within a city are correlated across weeks, and ignoring
+          that correlation makes p-values look more confident than they should.
+        </p>
+        <p>
+          The chart below is what the engine recovered. The error bars are the 90% confidence
+          intervals from the regression. Notice TV brand and direct mail show large measured
+          effects, paid search and display show small ones. The pattern is right; the per-channel
+          magnitudes have honest uncertainty, which is exactly what cluster-robust SE is for.
+        </p>
+      </div>
+
+      <div style="margin-top: 48px;">
+        <h2>The model</h2>
+        <p class="muted" style="max-width: 760px;">
+          One linear probability regression, with city and week fixed effects soaking up everything that
+          is constant within a city or constant within a week. The remaining identifying variation is
+          the dark-period structure we baked into the synthetic data.
+        </p>
+        <figure class="chart" style="background: var(--paper); padding: 28px 32px; font-family: 'JetBrains Mono', monospace; font-size: 0.92rem; color: var(--charcoal); line-height: 1.85;">
+conversion_rate<sub>c,w</sub> = &alpha;<br>
+&nbsp;&nbsp;+ &beta;<sub>1</sub> &middot; search_active<sub>c,w</sub><br>
+&nbsp;&nbsp;+ &beta;<sub>2</sub> &middot; social_active<sub>c,w</sub><br>
+&nbsp;&nbsp;+ &beta;<sub>3</sub> &middot; display_active<sub>c,w</sub><br>
+&nbsp;&nbsp;+ &beta;<sub>4</sub> &middot; tv_active<sub>c,w</sub><br>
+&nbsp;&nbsp;+ &beta;<sub>5</sub> &middot; mail_active<sub>c,w</sub><br>
+&nbsp;&nbsp;+ &beta;<sub>6</sub> &middot; affiliate_active<sub>c,w</sub><br>
+&nbsp;&nbsp;+ city_FE<sub>c</sub><br>
+&nbsp;&nbsp;+ week_FE<sub>w</sub><br>
+&nbsp;&nbsp;+ &epsilon;<sub>c,w</sub>
+        </figure>
+      </div>
+
+      <div style="margin-top: 48px;">
+        <h2>What the engine recovered</h2>
+        <p class="muted" style="max-width: 760px;">
+          Forest bars are the engine's measured incrementality per channel, with 90% cluster-robust
+          confidence intervals. Charcoal bars are the configured ground truth (shown for verification;
+          the engine itself never sees this).
+        </p>
+        <figure class="chart">
+          <img src="charts/geolift_measured_vs_true.png" alt="Bar chart with error bars showing measured incrementality per channel against ground truth.">
+        </figure>
+      </div>
+
+      <div style="margin-top: 48px;">
+        <h2>Implementation note</h2>
+        <p class="muted" style="max-width: 760px;">
+          The engine in <span class="mono">src/methods/did.py</span> is hand-rolled with numpy:
+          OLS via the normal equations, the cluster-robust sandwich variance formula, Acklam's
+          algorithm for the inverse normal CDF. No statsmodels (no Windows ARM64 wheels), no
+          scipy.stats (blocked by Smart App Control on this machine). Hand-rolling makes the
+          math visible, line by line, in roughly 80 lines of Python.
+        </p>
+      </div>
+
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div>
+    <a href="https://chantelhill.com" style="border-bottom: none; color: var(--mid);">&larr; Chantel Hill portfolio</a>
+    &nbsp;&middot;&nbsp; Built with Python 3.11, numpy, pandas, matplotlib, Anthropic SDK
+  </div>
+  <div>Project repo: <a href="https://github.com/chantelshill-a11y/attribution-truth-checker">github.com/chantelshill-a11y</a></div>
+</footer>
+
+</body>
+</html>

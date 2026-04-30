@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Truth-Check &mdash; Attribution Truth-Checker</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Jost:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="css/styles.css" rel="stylesheet">
+</head>
+<body>
+
+<nav class="top">
+  <div class="nav-brand">
+    <a class="nav-portfolio-link" href="https://chantelhill.com">Chantel Hill</a>
+    <span class="nav-separator">/</span>
+    <a class="nav-logo" href="index.html">Attribution Truth-Checker</a>
+  </div>
+  <ul class="nav-links">
+    <li><a href="index.html">Overview</a></li>
+    <li><a href="synthetic-data.html">Synthetic Data</a></li>
+    <li><a href="geo-lift.html">Geo-Lift Engine</a></li>
+    <li><a href="truth-check.html" class="active">Truth-Check</a></li>
+    <li><a href="narrative.html">Narrative</a></li>
+    <li><a href="self-evaluation.html">Self-Evaluation</a></li>
+  </ul>
+</nav>
+
+<main>
+  <section>
+    <div class="container">
+      <div class="eyebrow">Pipeline component &middot; 03 &middot; Interactive</div>
+      <h1>Where attribution and <em>reality</em> disagree.</h1>
+      <p style="max-width: 720px; font-size: 1.06rem; line-height: 1.85; color: var(--mid); margin-top: 16px;">
+        Channel by channel. The slider below lets you change the threshold for declaring a gap meaningful.
+        Drag it and watch the labels recompute live.
+      </p>
+
+      <div class="walkthrough">
+        <div class="walkthrough-eyebrow">Walkthrough &middot; Episode 04</div>
+        <span class="listen-cta" title="Audio narration coming in V2">Listen &middot; Coming soon</span>
+        <p>
+          This is the headline of the entire project. The <strong>charcoal bars</strong> in the chart
+          below are what the attribution model claims each channel contributed. The <strong>forest-green
+          bars</strong> are what we measured actually happened, using the geo-lift engine on the
+          previous page. The number above each pair is the gap, in percentage points.
+        </p>
+        <p>
+          The comparison is on <em>shares</em>, not absolute conversion counts. Last-touch attribution
+          attributes nearly all conversions to channels because it has no concept of baseline
+          conversions. In absolute terms, every channel looks over-credited by 2 to 5x. The
+          interesting question is which channels are <em>relatively</em> over- or under-credited
+          compared to their actual causal contribution. That is the slice the truth-check exposes.
+        </p>
+        <p>
+          Below the chart is the interactive part. The default threshold is five percentage points:
+          if the gap between model claim and measured share exceeds that, the channel gets flagged.
+          Drag the slider to see how the labels recompute. Notice that as you raise the threshold,
+          channels that were borderline drop into the "accurate" bucket. As you lower it, more get
+          flagged. This is the kind of decision you would actually make in production: where to draw
+          the line between noise and real misallocation.
+        </p>
+      </div>
+
+      <h2 style="margin-top: 48px;">Static comparison: model claim versus measured incrementality</h2>
+      <figure class="chart">
+        <img src="charts/comparison.png" alt="Bar chart showing model attributed share vs measured incremental share per channel, with gap labels.">
+        <figcaption>
+          Channels sorted by absolute share gap, biggest stories on the left. Direct mail is the
+          most-misallocated channel in this run, getting only 7.7% of model credit when measurement
+          supports 27.3%.
+        </figcaption>
+      </figure>
+
+      <h2 style="margin-top: 56px;">Try the slider</h2>
+      <p class="muted" style="max-width: 760px;">
+        The labels in the table below recompute every time the slider moves. The metric tiles roll up
+        accuracy and macro-F1 across 300 simulated predictions at the chosen threshold.
+      </p>
+
+      <div class="slider-block">
+        <label for="threshold-slider">
+          <span>Share-gap threshold</span>
+          <span id="threshold-value" class="slider-value">5.0pp</span>
+        </label>
+        <input id="threshold-slider" type="range" min="1.0" max="15.0" step="0.5" value="5.0">
+        <div class="metrics-row">
+          <div class="metric">
+            <div class="metric-label">Over-credited</div>
+            <div class="metric-value" id="count-over">&mdash;</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">Under-credited</div>
+            <div class="metric-value" id="count-under">&mdash;</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">Accurate</div>
+            <div class="metric-value" id="count-accurate">&mdash;</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">Accuracy &middot; Macro-F1</div>
+            <div class="metric-value">
+              <span id="metric-accuracy">&mdash;</span>
+              <span style="color: var(--mid); font-weight: 400;">/</span>
+              <span id="metric-macro-f1">&mdash;</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <table class="data" style="margin-top: 32px;">
+        <thead>
+          <tr>
+            <th>Channel</th>
+            <th class="num">Model share</th>
+            <th class="num">Measured share</th>
+            <th class="num">Gap</th>
+            <th>Label at this threshold</th>
+          </tr>
+        </thead>
+        <tbody id="channels-tbody">
+          <tr><td colspan="5" class="muted">Loading comparison data&hellip;</td></tr>
+        </tbody>
+      </table>
+
+      <p class="caption" style="margin-top: 16px;">
+        Channels sorted by absolute gap, largest first. The accuracy and macro-F1 tiles are computed
+        across 300 simulated predictions at the chosen threshold; this lets you see how a different
+        decision boundary would change the validator's classification metrics on held-out runs.
+      </p>
+
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div>
+    <a href="https://chantelhill.com" style="border-bottom: none; color: var(--mid);">&larr; Chantel Hill portfolio</a>
+    &nbsp;&middot;&nbsp; Built with Python 3.11, numpy, pandas, matplotlib, Anthropic SDK
+  </div>
+  <div>Project repo: <a href="https://github.com/chantelshill-a11y/attribution-truth-checker">github.com/chantelshill-a11y</a></div>
+</footer>
+
+<script src="js/slider.js"></script>
+</body>
+</html>

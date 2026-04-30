@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Synthetic Data &mdash; Attribution Truth-Checker</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Jost:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="css/styles.css" rel="stylesheet">
+</head>
+<body>
+
+<nav class="top">
+  <div class="nav-brand">
+    <a class="nav-portfolio-link" href="https://chantelhill.com">Chantel Hill</a>
+    <span class="nav-separator">/</span>
+    <a class="nav-logo" href="index.html">Attribution Truth-Checker</a>
+  </div>
+  <ul class="nav-links">
+    <li><a href="index.html">Overview</a></li>
+    <li><a href="synthetic-data.html" class="active">Synthetic Data</a></li>
+    <li><a href="geo-lift.html">Geo-Lift Engine</a></li>
+    <li><a href="truth-check.html">Truth-Check</a></li>
+    <li><a href="narrative.html">Narrative</a></li>
+    <li><a href="self-evaluation.html">Self-Evaluation</a></li>
+  </ul>
+</nav>
+
+<main>
+  <section>
+    <div class="container">
+      <div class="eyebrow">Pipeline component &middot; 01</div>
+      <h1>Building an answer key by <em>construction</em>.</h1>
+      <p style="max-width: 720px; font-size: 1.06rem; line-height: 1.85; color: var(--mid); margin-top: 16px;">
+        A validation system needs ground truth. Real attribution data has none. So we built it: 100,000
+        simulated users across 50 cities, 26 weeks of marketing exposure, six channels with deliberately
+        different over-, under-, and accurate-attribution patterns baked into the data-generating process.
+      </p>
+
+      <div class="walkthrough">
+        <div class="walkthrough-eyebrow">Walkthrough &middot; Episode 02</div>
+        <span class="listen-cta" title="Audio narration coming in V2">Listen &middot; Coming soon</span>
+        <p>
+          Real attribution data has no answer key. That's the entire problem. The question
+          <em>"did this channel actually drive this conversion"</em> is unanswerable from production
+          data alone, because you only ever see one universe: the one where the channel was on.
+          To validate any attribution method, we need data where we know the answer in advance.
+          So that's what I built.
+        </p>
+        <p>
+          The mechanism is what statisticians call a <strong>hazard model</strong>. For each
+          (user, week), the conversion probability is a baseline rate plus a per-channel boost
+          for every channel the user was exposed to that week. We draw a coin flip at that
+          probability, and we keep an honest tally of which channel deserves credit for each
+          conversion. The tally is the answer key.
+        </p>
+        <p>
+          The <strong>chart on the right below</strong> is the verification. Blue bars are the
+          configured truth: the share of conversions each channel actually caused. Forest-green
+          bars are what a deliberately-broken last-touch attribution model claims. Notice how
+          display is wildly over-credited and TV brand is wildly under-credited. That's the
+          pattern the rest of the system has to detect from public data alone, without ever
+          consulting the answer key.
+        </p>
+        <p>
+          Below the verification: the dark-period structure. Some channel-week-city cells are
+          deliberately turned off, in stretches of three weeks or more. Without those dark
+          periods, geo-lift has nothing to compare. With them, every active vs dark contrast
+          is a natural-experiment data point.
+        </p>
+      </div>
+
+      <div class="two-col" style="margin-top: 48px;">
+        <div>
+          <h2>Truth versus model: the verification chart</h2>
+          <p class="muted">
+            Channel-only shares of the conversions each channel was responsible for, as built into the
+            data, compared to what last-touch attribution claims after the fact. The gap above each pair
+            is the misallocation we'll later try to detect from public data alone.
+          </p>
+        </div>
+        <figure class="chart" style="margin: 0;">
+          <img src="charts/truth_vs_model.png" alt="Bar chart comparing true incremental share (answer key) to last-touch model claim per channel.">
+        </figure>
+      </div>
+
+      <div class="two-col" style="margin-top: 48px;">
+        <figure class="chart" style="margin: 0;">
+          <img src="charts/exposure_heatmap.png" alt="Heatmap of channel exposure coverage per week. Cream cells are dark periods.">
+        </figure>
+        <div>
+          <h2>Dark periods, the natural-experiment structure</h2>
+          <p class="muted">
+            Cream cells are city-channel-week combinations where the channel was held out. Roughly 25%
+            of cells are dark, in stretches of at least three weeks. These are what the geo-lift engine
+            exploits to identify each channel's incremental effect.
+          </p>
+        </div>
+      </div>
+
+      <div class="two-col" style="margin-top: 48px;">
+        <div>
+          <h2>City-size variance for matching</h2>
+          <p class="muted">
+            Conversions per week, eight sample cities (four largest in forest tones, four smallest in
+            gray). The size separation is intentional: city features must vary across the population
+            so the matching layer can find good treatment-and-control pairs for synthetic-control
+            extensions.
+          </p>
+        </div>
+        <figure class="chart" style="margin: 0;">
+          <img src="charts/weekly_conversions.png" alt="Line chart of weekly conversions across eight cities.">
+        </figure>
+      </div>
+
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div>
+    <a href="https://chantelhill.com" style="border-bottom: none; color: var(--mid);">&larr; Chantel Hill portfolio</a>
+    &nbsp;&middot;&nbsp; Built with Python 3.11, numpy, pandas, matplotlib, Anthropic SDK
+  </div>
+  <div>Project repo: <a href="https://github.com/chantelshill-a11y/attribution-truth-checker">github.com/chantelshill-a11y</a></div>
+</footer>
+
+</body>
+</html>

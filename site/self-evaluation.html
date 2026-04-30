@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Self-Evaluation &mdash; Attribution Truth-Checker</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Jost:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="css/styles.css" rel="stylesheet">
+</head>
+<body>
+
+<nav class="top">
+  <div class="nav-brand">
+    <a class="nav-portfolio-link" href="https://chantelhill.com">Chantel Hill</a>
+    <span class="nav-separator">/</span>
+    <a class="nav-logo" href="index.html">Attribution Truth-Checker</a>
+  </div>
+  <ul class="nav-links">
+    <li><a href="index.html">Overview</a></li>
+    <li><a href="synthetic-data.html">Synthetic Data</a></li>
+    <li><a href="geo-lift.html">Geo-Lift Engine</a></li>
+    <li><a href="truth-check.html">Truth-Check</a></li>
+    <li><a href="narrative.html">Narrative</a></li>
+    <li><a href="self-evaluation.html" class="active">Self-Evaluation</a></li>
+  </ul>
+</nav>
+
+<main>
+  <section>
+    <div class="container">
+      <div class="eyebrow">Pipeline component &middot; 05</div>
+      <h1>The validator, <em>validated</em>.</h1>
+      <p style="max-width: 720px; font-size: 1.06rem; line-height: 1.85; color: var(--mid); margin-top: 16px;">
+        Precision, recall, F1, threshold sweep, calibration, and Claude grading Claude. The discipline
+        most attribution work skips, borrowed from how clause classifiers are graded in legal AI.
+      </p>
+
+      <div class="walkthrough">
+        <div class="walkthrough-eyebrow">Walkthrough &middot; Episode 06</div>
+        <span class="listen-cta" title="Audio narration coming in V2">Listen &middot; Coming soon</span>
+        <p>
+          Marketing teams almost never apply classification metrics to attribution decisions.
+          Attribution outputs look continuous, like credit shares, not categorical. But the
+          <em>decisions</em> this system outputs are categorical: over-credited, under-credited,
+          or accurate. So we should grade them the same way we grade any classifier.
+        </p>
+        <p>
+          What you are looking at on this page is the validator, validated. The
+          <strong>confusion matrix</strong> shows where the system's labels match the configured
+          ground truth, and where they confuse. The <strong>threshold sweep</strong> shows where
+          the F1-optimal cutoff is. The <strong>calibration check</strong> tells us whether the
+          system's stated confidence matches its empirical accuracy. The
+          <strong>narrative evaluation</strong> has Claude grade Claude on whether the executive
+          summary's claims are consistent with the comparison data.
+        </p>
+        <p>
+          This page is the methodological discipline most attribution work skips, and it is the
+          single strongest interview moment in the project. The framing is borrowed from how
+          clause classifiers are evaluated in legal AI, applied to a domain that does not
+          usually receive it.
+        </p>
+      </div>
+
+      <h2 style="margin-top: 56px;">Per-class precision, recall, F1</h2>
+      <p class="muted" style="max-width: 760px;">
+        50 simulations &times; 6 channels = 300 predictions. Configured labels stay constant; engine
+        predictions vary with measurement noise. Approximately 100 predictions per class.
+      </p>
+      <div class="two-col" style="margin-top: 24px;">
+        <figure class="chart" style="margin: 0;">
+          <img src="charts/confusion_matrix.png" alt="Confusion matrix showing predicted vs configured labels.">
+        </figure>
+        <figure class="chart" style="margin: 0;">
+          <img src="charts/per_class_metrics.png" alt="Bar chart of precision, recall, F1 per class.">
+        </figure>
+      </div>
+      <p class="caption" style="margin-top: 12px;">
+        Three observations. <strong>Recall on actionable classes is high</strong> (0.85 on
+        OVER, 0.79 on UNDER), so when there is real misallocation the system catches it.
+        <strong>OVER and UNDER almost never get confused with each other</strong> (3 of 100
+        in each direction), so the system never tells you to cut a channel that should be
+        expanded. <strong>The weakness is on ACCURATE recall (0.43)</strong>, which the
+        threshold sweep below addresses.
+      </p>
+
+      <h2 style="margin-top: 64px;">Threshold sweep</h2>
+      <p class="muted" style="max-width: 760px;">
+        The 5pp default for the truth-check is an educated guess. Sweeping it in 0.5pp steps
+        across [1pp, 15pp] and recomputing F1 at each candidate shows where the optimum lives
+        per class.
+      </p>
+      <figure class="chart">
+        <img src="charts/threshold_sweep.png" alt="Two-panel chart: F1 by class vs threshold, and OVER class precision/recall trade-off.">
+        <figcaption>
+          F1-optimal threshold for OVER_CREDITED (the budget-relevant class) is 8.0pp. Macro-F1
+          peaks at the same point. Biggest gain is on the ACCURATE class at 13.5pp (+0.141 F1),
+          which would substantially cut the false-flag rate.
+        </figcaption>
+      </figure>
+
+      <h2 style="margin-top: 64px;">Calibration check</h2>
+      <p class="muted" style="max-width: 760px;">
+        When the system says it is confident in a label, is it actually right that often? Confidence
+        is defined as the margin from the decision boundary. Expected Calibration Error (ECE) is the
+        bin-size-weighted mean absolute gap between stated confidence and empirical accuracy.
+      </p>
+      <figure class="chart">
+        <img src="charts/calibration.png" alt="Reliability diagram of stated confidence vs empirical accuracy across confidence bins.">
+        <figcaption>
+          ECE = 0.155, meaningfully miscalibrated. The system is well-calibrated at the extremes
+          (the largest bin at 99% stated confidence is 91% empirical accuracy) but over-confident
+          in the moderate-confidence range. At 85% stated confidence, empirical accuracy is only
+          52%. That is the dangerous failure mode you cannot see in macro-F1 alone.
+        </figcaption>
+      </figure>
+
+      <h2 style="margin-top: 64px;" id="narrative-eval">LLM-grades-LLM narrative evaluation</h2>
+      <p class="muted" style="max-width: 760px;">
+        Take the executive summary from the narrative page. Structure the comparison data as
+        ground truth. Have Claude grade Claude on whether the narrative's claims are consistent.
+        Per channel labeled OVER or UNDER, the grader returns three booleans: was the channel
+        mentioned, was the direction correctly stated, were the cited numbers within tolerance.
+      </p>
+      <div class="metrics-row" style="margin-top: 24px;">
+        <div class="metric">
+          <div class="metric-label">Channel mentioned</div>
+          <div class="metric-value">100%</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Direction correct</div>
+          <div class="metric-value">100%</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Magnitude approx correct</div>
+          <div class="metric-value">100%</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Total API cost</div>
+          <div class="metric-value">$0.26</div>
+        </div>
+      </div>
+      <p class="caption" style="margin-top: 16px;">
+        18 channel-level evaluations across 5 simulated runs. Two honest caveats: small N (with
+        50 evaluations we would likely find some failures, particularly on magnitude) and
+        same-family LLM judging itself (the grader is also Opus 4.7; a rigorous follow-up uses
+        a different judge family). Even with the caveats, 100% on direction correctness is a
+        real signal: the prompt structure forces the writer to ground numeric claims in the
+        input data.
+      </p>
+
+      <h2 style="margin-top: 64px;" id="methodology">What I would change at AmEx scale</h2>
+      <ol style="max-width: 780px; line-height: 1.85; color: var(--charcoal); margin-left: 24px;">
+        <li><strong>Real data inputs.</strong> Replace the synthetic data source with warehouse connectors (Snowflake or Teradata). The interface stays the same; the implementation changes.</li>
+        <li><strong>Attribution model integration.</strong> Pull the existing model's outputs from the warehouse and feed them in alongside measurement.</li>
+        <li><strong>Real geo-experiments.</strong> Pull experiment metadata from Eppo or Statsig (or an internal tool) so geo-tests are real holdouts, not synthetic dark periods.</li>
+        <li><strong>Single-channel synthetic control</strong> in <span class="mono">src/methods/synthetic_control.py</span>. Tighter per-channel magnitudes than multi-channel TWFE.</li>
+        <li><strong>Larger-N evaluation runs.</strong> 200+ simulations for production-grade P/R/F1 numbers. With out-of-family judges (Sonnet, or non-Anthropic), the narrative eval becomes rigorous.</li>
+        <li><strong>Output destinations and audit logging.</strong> The narrative report auto-delivers to a Confluence page, a Slack channel, or an email distribution list. Every recalibration recommendation gets an audit trail.</li>
+      </ol>
+
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div>
+    <a href="https://chantelhill.com" style="border-bottom: none; color: var(--mid);">&larr; Chantel Hill portfolio</a>
+    &nbsp;&middot;&nbsp; Built with Python 3.11, numpy, pandas, matplotlib, Anthropic SDK
+  </div>
+  <div>Project repo: <a href="https://github.com/chantelshill-a11y/attribution-truth-checker">github.com/chantelshill-a11y</a></div>
+</footer>
+
+</body>
+</html>
